@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R&V Fundaciones · Revisión de Storyboard</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#06090F;color:#F0F4FF;font-family:'Satoshi',system-ui,sans-serif;font-size:14px;line-height:1.5;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:300;pointer-events:none;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px}
+
+:root{
+  --bg:#06090F;--bg2:#0A0D17;--bg3:#0E1220;
+  --blue:#1B3F8F;--blue-m:#2B54C4;--blue-l:#4A90D9;
+  --gold:#D4A73A;--muted:#8A9ABB;--faint:#3A4260;
+  --border:rgba(255,255,255,0.06);--bm:rgba(74,144,217,0.2);
+  --green:#22C55E;--amber:#F59E0B;--red:#EF4444;
+  --mono:'JetBrains Mono',monospace;
+}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:100;background:rgba(6,9,15,0.88);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border)}
+.hdr-inner{max-width:1440px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+.hdr-brand{display:flex;align-items:center;gap:14px}
+.hdr-badge{width:40px;height:40px;background:var(--blue);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;letter-spacing:-0.5px;border:1px solid rgba(255,255,255,0.08)}
+.hdr-badge span{color:#7AADFF}
+.hdr-meta h1{font-size:13px;font-weight:700;letter-spacing:-0.02em}
+.hdr-meta p{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:1px}
+.pb-strip{display:flex;gap:14px;align-items:center}
+.pb-count{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-ok{background:var(--green)}.dot-cambio{background:var(--amber)}.dot-rechazado{background:var(--red)}.dot-pend{background:var(--faint)}
+
+/* INTRO */
+.intro{max-width:1440px;margin:0 auto;padding:40px 40px 32px;display:grid;grid-template-columns:1fr 340px;gap:40px}
+.eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue-l);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--blue-l);flex-shrink:0}
+.intro h1{font-size:26px;font-weight:900;letter-spacing:-0.03em;line-height:1.1;margin-bottom:10px}
+.intro-body{font-size:12px;color:var(--muted);line-height:1.7;max-width:500px}
+.steps{margin-top:16px;display:flex;flex-direction:column;gap:7px}
+.step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--muted)}
+.sn{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--blue-l);min-width:20px;height:20px;border:1px solid var(--bm);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* NAME CARD */
+.name-card{background:var(--bg3);border:1px solid var(--bm);border-radius:14px;padding:22px;position:relative;overflow:hidden}
+.name-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue-l))}
+.name-card h3{font-size:13px;font-weight:700;margin-bottom:3px}
+.name-card p{font-size:11px;color:var(--muted);margin-bottom:16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.field input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--muted);font-family:'Satoshi',sans-serif;font-size:12px;outline:none;transition:border-color 0.2s}
+.field input:focus{border-color:var(--blue-l);color:#F0F4FF}
+.field input::placeholder{color:var(--faint)}
+.btn-start{width:100%;padding:12px;background:var(--blue-m);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'Satoshi',sans-serif;font-size:13px;font-weight:700;transition:background 0.2s,transform 0.15s}
+.btn-start:hover{background:var(--blue-l);transform:translateY(-1px)}
+
+/* ACT SECTION */
+.act{max-width:1440px;margin:0 auto 64px;padding:0 40px}
+.act-hdr{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);position:relative}
+.act-hdr::after{content:'';position:absolute;bottom:-1px;left:0;width:80px;height:1px}
+.act-badge{display:flex;flex-direction:column;align-items:center;min-width:60px;padding:10px 8px;border-radius:9px;border:1px solid currentColor;opacity:0.8}
+.act-badge-n{font-family:var(--mono);font-size:7px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:3px}
+.act-badge-i{font-size:20px;font-weight:900;font-family:var(--mono);letter-spacing:-0.05em;line-height:1}
+.act-meta h2{font-size:22px;font-weight:900;letter-spacing:-0.03em;margin-bottom:4px}
+.act-meta time{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+.a1 .act-badge{color:#C84B31}.a1 .act-hdr::after{background:#C84B31}
+.a2 .act-badge{color:#2E9E5E}.a2 .act-hdr::after{background:#2E9E5E}
+.a3 .act-badge{color:#3D72E0}.a3 .act-hdr::after{background:#3D72E0}
+.a4 .act-badge{color:#8B5CF6}.a4 .act-hdr::after{background:#8B5CF6}
+.a5 .act-badge{color:#E8A43C}.a5 .act-hdr::after{background:#E8A43C}
+.a6 .act-badge{color:#22D3D3}.a6 .act-hdr::after{background:#22D3D3}
+.a7 .act-badge{color:#D4A73A}.a7 .act-hdr::after{background:#D4A73A}
+
+/* GRID */
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+/* SCENE CARD */
+.sc{position:relative;background:var(--bg2);border-radius:12px;overflow:hidden;border:1px solid var(--border);transition:border-color 0.3s,transform 0.3s cubic-bezier(0.16,1,0.3,1);opacity:0;translate:0 18px}
+.sc.rev{opacity:1;translate:0 0;transition:opacity 0.5s cubic-bezier(0.16,1,0.3,1),translate 0.5s cubic-bezier(0.16,1,0.3,1),border-color 0.3s,transform 0.3s}
+.sc.s-ok{border-color:rgba(34,197,94,0.4)!important}
+.sc.s-cambio{border-color:rgba(245,158,11,0.4)!important}
+.sc.s-rechazado{border-color:rgba(239,68,68,0.4)!important}
+
+.sc-sb{position:absolute;top:10px;right:10px;z-index:10;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;display:none;backdrop-filter:blur(4px)}
+.sc.s-ok .sc-sb{display:block;background:rgba(34,197,94,0.2);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
+.sc.s-cambio .sc-sb{display:block;background:rgba(245,158,11,0.2);color:var(--amber);border:1px solid rgba(245,158,11,0.3)}
+.sc.s-rechazado .sc-sb{display:block;background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+
+.sc-img{width:100%;aspect-ratio:16/9;overflow:hidden;background:#080C18;position:relative}
+.sc-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1)}
+.sc:hover .sc-img img{transform:scale(1.03)}
+.sc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(6,9,15,0.65));pointer-events:none}
+.sc-num{position:absolute;top:10px;left:10px;z-index:2;font-family:var(--mono);font-size:9px;font-weight:700;background:rgba(6,9,15,0.82);color:#F0F4FF;padding:3px 8px;border-radius:5px;border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(4px)}
+
+.sc-body{padding:12px 14px 14px}
+.sc-shot{font-family:var(--mono);font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.sc-desc{font-size:12px;font-weight:600;line-height:1.4;margin-bottom:7px}
+.sc-vo{font-size:11px;color:var(--muted);line-height:1.6;font-style:italic;border-left:2px solid var(--blue);padding:4px 8px 4px 10px;background:rgba(27,63,143,0.06);border-radius:0 4px 4px 0;margin-bottom:11px}
+
+.sc-ce{background:rgba(74,144,217,0.06);border:1px solid rgba(74,144,217,0.15);border-radius:7px;padding:8px 11px;margin-bottom:10px;display:none}
+.sc-ce.vis{display:block}
+.sc-ce-lbl{font-family:var(--mono);font-size:7.5px;letter-spacing:0.15em;text-transform:uppercase;color:var(--faint);margin-bottom:3px}
+.sc-ce-txt{font-size:11px;color:var(--muted);line-height:1.5;font-style:italic}
+
+.btn-c{width:100%;padding:9px 14px;background:transparent;border:1px solid var(--border);border-radius:7px;cursor:pointer;font-family:'Satoshi',sans-serif;font-size:11px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:7px;transition:background 0.2s,border-color 0.2s,color 0.2s}
+.btn-c:hover{background:rgba(74,144,217,0.07);border-color:var(--bm);color:var(--blue-l)}
+.btn-c svg{width:12px;height:12px;flex-shrink:0}
+.btn-c.done{background:rgba(74,144,217,0.06);border-color:rgba(74,144,217,0.25);color:var(--blue-l)}
+.btn-c .bd{width:6px;height:6px;border-radius:50%;background:var(--blue-l);flex-shrink:0}
+.sc-body.locked .btn-c{opacity:0.4;pointer-events:none}
+
+/* DRAWER */
+.overlay{position:fixed;inset:0;z-index:400;background:rgba(6,9,15,0.75);backdrop-filter:blur(6px);display:none;opacity:0;transition:opacity 0.25s;align-items:flex-end;justify-content:flex-end}
+.overlay.open{display:flex}
+.overlay.vis{opacity:1}
+.drawer{width:420px;height:100vh;background:var(--bg2);border-left:1px solid var(--bm);display:flex;flex-direction:column;transform:translateX(30px);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);overflow:hidden}
+.overlay.vis .drawer{transform:translateX(0)}
+.d-top{position:relative;padding:22px 22px 0;border-bottom:1px solid var(--border)}
+.d-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue-l))}
+.d-close{position:absolute;top:14px;right:18px;width:28px;height:28px;border-radius:6px;background:transparent;border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:background 0.2s}
+.d-close:hover{background:var(--bg3)}
+.d-close svg{width:11px;height:11px}
+.d-num{font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue-l);margin-bottom:5px}
+.d-title{font-size:14px;font-weight:700;letter-spacing:-0.02em;margin-bottom:5px}
+.d-sub{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.5;font-style:italic}
+.d-prev{aspect-ratio:16/9;background:#080C18;overflow:hidden;position:relative}
+.d-prev img{width:100%;height:100%;object-fit:cover;display:block}
+.d-prev::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(10,13,23,0.6))}
+.d-body{flex:1;overflow-y:auto;padding:18px 22px}
+.d-body::-webkit-scrollbar{width:3px}
+.d-body::-webkit-scrollbar-thumb{background:var(--faint);border-radius:2px}
+.fl{font-family:var(--mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--faint);margin-bottom:6px;display:block}
+.er{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px}
+.eo{position:relative}
+.eo input{position:absolute;opacity:0;width:0;height:0}
+.el{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:background 0.2s,border-color 0.2s;font-size:10px;font-weight:600;color:var(--muted);text-align:center}
+.el:hover{background:var(--bg3)}
+.ei{font-size:17px;line-height:1}
+.eo input:checked ~ .el.ok{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.4);color:var(--green)}
+.eo input:checked ~ .el.cambio{background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.4);color:var(--amber)}
+.eo input:checked ~ .el.rech{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.4);color:var(--red)}
+.d-ta{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px;color:var(--muted);font-family:'Satoshi',sans-serif;font-size:12px;line-height:1.6;resize:vertical;min-height:90px;outline:none;transition:border-color 0.2s}
+.d-ta:focus{border-color:var(--blue-l);color:#F0F4FF}
+.d-ta::placeholder{color:var(--faint)}
+.btn-save{width:100%;padding:12px;margin-top:14px;background:var(--blue-m);color:#fff;border:none;border-radius:9px;cursor:pointer;font-family:'Satoshi',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.2s,transform 0.15s}
+.btn-save:hover{background:var(--blue-l);transform:translateY(-1px)}
+.btn-save:active{transform:none}
+
+/* SUMMARY */
+.sum{max-width:1440px;margin:0 auto 60px;padding:0 40px;display:none}
+.sum.vis{display:block}
+.sum-box{border:1px solid var(--bm);border-radius:14px;overflow:hidden;position:relative}
+.sum-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue-l))}
+.sum-head{padding:20px 22px;background:var(--bg3);display:flex;align-items:center;justify-content:space-between}
+.sum-head h3{font-size:14px;font-weight:700;letter-spacing:-0.02em}
+.sum-head p{font-size:11px;color:var(--muted);margin-top:2px}
+.btn-sa{padding:10px 18px;background:var(--blue-m);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'Satoshi',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;transition:background 0.2s}
+.btn-sa:hover{background:var(--blue-l)}
+.btn-sa:disabled{opacity:0.5;cursor:not-allowed}
+.sum-list{max-height:320px;overflow-y:auto}
+.si{display:grid;grid-template-columns:68px 1fr auto;align-items:center;gap:14px;padding:11px 18px;border-bottom:1px solid var(--border)}
+.si:last-child{border-bottom:none}
+.si-s{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.si-d{font-size:11px;color:var(--muted)}
+.si-c{font-size:10px;color:#F0F4FF;font-style:italic;margin-top:2px}
+.ss{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
+.ss.ok{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.25)}
+.ss.cambio{background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.25)}
+.ss.rech{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.25)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;translate:-50% 0;z-index:500;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 18px;display:flex;align-items:center;gap:9px;font-size:12px;font-weight:600;transform:translateY(18px);opacity:0;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.35s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.t-ic{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.toast.ok .t-ic{background:rgba(34,197,94,0.2)}
+.toast.err .t-ic{background:rgba(239,68,68,0.2)}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:20px 40px;max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.footer span{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:0.05em;line-height:1.8}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:1100px){.intro{grid-template-columns:1fr}.hdr-inner,.intro,.act,.sum,.footer{padding-left:20px;padding-right:20px}.pb-strip{display:none}}
+@media(max-width:700px){.sg{grid-template-columns:1fr}.drawer{width:100vw}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-brand">
+      <div class="hdr-badge">R<span>&</span>V</div>
+      <div class="hdr-meta">
+        <h1>R&V Fundaciones — Revisión de Storyboard</h1>
+        <p>Aprueba, comenta o solicita cambios por escena</p>
+      </div>
+    </div>
+    <div class="pb-strip" id="pbStrip" style="display:none">
+      <div class="pb-count"><span class="dot dot-pend"></span><span id="cP">34 pendientes</span></div>
+      <div class="pb-count"><span class="dot dot-ok"></span><span id="cO">0</span></div>
+      <div class="pb-count"><span class="dot dot-cambio"></span><span id="cC">0</span></div>
+      <div class="pb-count"><span class="dot dot-rechazado"></span><span id="cR">0</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="intro" id="introSec">
+  <div>
+    <p class="eyebrow">Proceso de Revisión · R&V Fundaciones</p>
+    <h1>Tu feedback construye el film.</h1>
+    <p class="intro-body">Este es el storyboard del film corporativo. Revisa cada escena y deja tu opinión — aprueba, marca cambios o rechaza. Tu feedback llega directamente al equipo de producción.</p>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div><span>Ingresa tu nombre a la derecha para comenzar.</span></div>
+      <div class="step"><div class="sn">2</div><span>Haz clic en <strong style="color:#F0F4FF">Comentar escena</strong> en cualquier tarjeta.</span></div>
+      <div class="step"><div class="sn">3</div><span>Elige Aprobado / Con cambios / Rechazar y escribe tu feedback.</span></div>
+      <div class="step"><div class="sn">4</div><span>Al terminar, usa <strong style="color:#F0F4FF">Enviar revisión completa</strong> en la parte inferior.</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="name-card" id="nameCard">
+      <h3>Identifícate para comenzar</h3>
+      <p>Tus comentarios se enviarán con tu nombre.</p>
+      <div class="field"><label>Tu nombre</label><input type="text" id="iName" placeholder="Ej: María González" maxlength="60"></div>
+      <div class="field"><label>Tu empresa / rol</label><input type="text" id="iRole" placeholder="Ej: Directora de Marketing, R&V" maxlength="80"></div>
+      <button class="btn-start" onclick="startReview()">Comenzar revisión →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ACTO 01 — INTRODUCCIÓN ═══════════ -->
+<section class="act a1" id="a1">
+  <div class="act-hdr">
+    <div class="act-badge"><div class="act-badge-n">Acto</div><div class="act-badge-i">01</div></div>
+    <div class="act-meta"><h2>Introducción</h2><time>00:00 — 00:12 · 5 escenas</time></div>
+  </div>
+  <div class="sg">
+    <div class="sc" data-s="ESC 01" data-a="Acto 01 — Introducción" data-d="Apertura fría · Panorámica urbana al atardecer" data-i="storyboard-frames/intro 1.png" data-v="Todo proyecto de construcción comienza con una decisión."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 01</span><img src="storyboard-frames/intro 1.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Apertura Fría · Plano Aéreo General</div><div class="sc-desc">Panorámica urbana al atardecer. Obras de construcción visibles desde arriba.</div><div class="sc-vo">"Todo proyecto de construcción comienza con una decisión."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 02" data-a="Acto 01 — Introducción" data-d="Plano Medio · Fundación desde abajo, capa invisible" data-i="storyboard-frames/intro  2.png" data-v="La decisión de confiar en lo que nadie verá..."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 02</span><img src="storyboard-frames/intro  2.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano Medio · Ángulo Bajo</div><div class="sc-desc">Fundación existente vista desde abajo — la capa invisible que sostiene todo.</div><div class="sc-vo">"La decisión de confiar en lo que nadie verá..."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 03" data-a="Acto 01 — Introducción" data-d="Plano General · Obra de fundación tradicional, maquinaria pesada" data-i="storyboard-frames/intro  3.png" data-v="Durante décadas, las fundaciones significaron excavación, escombros, maquinaria pesada."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 03</span><img src="storyboard-frames/intro  3.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Documental en Mano</div><div class="sc-desc">Obra de fundación tradicional. Maquinaria pesada, tierra removida, caos convencional.</div><div class="sc-vo">"Durante décadas, las fundaciones significaron excavación, escombros..."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 04" data-a="Acto 01 — Introducción" data-d="Plano Medio · Trabajadores y camiones en obra" data-i="storyboard-frames/intro  4a.png" data-v="Métodos que resuelven un problema..."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 04</span><img src="storyboard-frames/intro  4a.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano Medio · Travelling</div><div class="sc-desc">Trabajadores y maquinaria pesada. Camiones retirando tierra, plazos extendidos.</div><div class="sc-vo">"Métodos que resuelven un problema..."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 05" data-a="Acto 01 — Introducción" data-d="Primer Plano · Impacto ambiental, suelo alterado" data-i="storyboard-frames/intro  4b.png" data-v="...mientras suelen crear otros."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 05</span><img src="storyboard-frames/intro  4b.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Primer Plano · Impacto Ambiental</div><div class="sc-desc">Costo ambiental visible — suelo alterado, material desplazado, escombros.</div><div class="sc-vo">"...mientras suelen crear otros."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+  </div>
+</section>
+
+<!-- ═══════════ ACTO 02 — EL PROBLEMA ═══════════ -->
+<section class="act a2" id="a2">
+  <div class="act-hdr">
+    <div class="act-badge"><div class="act-badge-n">Acto</div><div class="act-badge-i">02</div></div>
+    <div class="act-meta"><h2>El Problema</h2><time>00:13 — 00:17 · 2 escenas</time></div>
+  </div>
+  <div class="sg">
+    <div class="sc" data-s="ESC 06" data-a="Acto 02 — El Problema" data-d="Reveal del Ecopilote · Plano héroe, acero galvanizado" data-i="storyboard-frames/1a.png" data-v="Hoy existe una forma más inteligente de construir."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 06</span><img src="storyboard-frames/1a.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Reveal del Producto · Cámara Lenta</div><div class="sc-desc">El Ecopilote aparece. Limpio, preciso. Plano héroe del producto.</div><div class="sc-vo">"Hoy existe una forma más inteligente de construir."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 07" data-a="Acto 02 — El Problema" data-d="Primer Plano · Hélice de precisión, rotación 360°" data-i="storyboard-frames/1b.png" data-v="Más eficiente. Más precisa. Más inteligente."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 07</span><img src="storyboard-frames/1b.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Primer Plano · Rotación 360°</div><div class="sc-desc">Detalle del ecopilote — hélice de precisión, acabado galvanizado.</div><div class="sc-vo">"Más eficiente. Más precisa. Más inteligente."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+  </div>
+</section>
+
+<!-- ═══════════ ACTO 03 — EL DIFERENCIADOR ═══════════ -->
+<section class="act a3" id="a3">
+  <div class="act-hdr">
+    <div class="act-badge"><div class="act-badge-n">Acto</div><div class="act-badge-i">03</div></div>
+    <div class="act-meta"><h2>El Diferenciador · La Ingeniería</h2><time>00:18 — 00:29 · 5 escenas</time></div>
+  </div>
+  <div class="sg">
+    <div class="sc" data-s="ESC 08" data-a="Acto 03 — El Diferenciador" data-d="Equipo de ingenieros, modelos estructurales, mapas sísmicos" data-i="storyboard-frames/2.png" data-v="En R&V Fundaciones transformamos tecnología internacional..."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 08</span><img src="storyboard-frames/2.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano Medio · Oficina de Ingeniería</div><div class="sc-desc">Equipo de ingenieros — monitores con modelos estructurales, mapas sísmicos de Chile.</div><div class="sc-vo">"En R&V transformamos tecnología internacional para la realidad geotécnica de Chile."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 09" data-a="Acto 03 — El Diferenciador" data-d="Ingeniero revisando modelo FEM, distribución de cargas" data-i="storyboard-frames/2b.png" data-v="Porque instalar un sistema no es suficiente."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 09</span><img src="storyboard-frames/2b.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Por Encima del Hombro · Pantalla</div><div class="sc-desc">Ingeniero revisando software FEM — distribución de cargas en pantalla.</div><div class="sc-vo">"Porque instalar un sistema no es suficiente."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 10" data-a="Acto 03 — El Diferenciador" data-d="Manos sobre planos técnicos y memorias de cálculo" data-i="storyboard-frames/3a.png" data-v="Por eso, cada proyecto comienza con ingeniería."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 10</span><img src="storyboard-frames/3a.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano Detalle · Planos Técnicos</div><div class="sc-desc">Manos revisando planos estructurales, informes de suelo, documentos de ingeniería.</div><div class="sc-vo">"Por eso, cada proyecto comienza con ingeniería."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 11" data-a="Acto 03 — El Diferenciador" data-d="Vista completa del departamento de ingeniería R&V" data-i="storyboard-frames/3b.png" data-v="Cada variable se evalúa antes de comenzar la primera instalación."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 11</span><img src="storyboard-frames/3b.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Departamento Ingeniería</div><div class="sc-desc">Vista completa del departamento — múltiples estaciones, pantallas de datos, modelos.</div><div class="sc-vo">"Cada variable se evalúa antes de comenzar la primera instalación."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 12" data-a="Acto 03 — El Diferenciador" data-d="Montaje de ensayo de arrancamiento, equipo hidráulico en obra" data-i="storyboard-frames/4.png" data-v="Y cada diseño se valida donde más importa. En terreno."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 12</span><img src="storyboard-frames/4.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Ensayo en Terreno</div><div class="sc-desc">Equipo de ensayo hidráulico en obra. Ingenieros monitoreando en terreno real.</div><div class="sc-vo">"Y cada diseño se valida donde más importa. En terreno."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+  </div>
+</section>
+
+<!-- ═══════════ ACTO 04 — INSTALACIÓN ═══════════ -->
+<section class="act a4" id="a4">
+  <div class="act-hdr">
+    <div class="act-badge"><div class="act-badge-n">Acto</div><div class="act-badge-i">04</div></div>
+    <div class="act-meta"><h2>Instalación · Precisión en Movimiento</h2><time>00:30 — 00:54 · 5 escenas</time></div>
+  </div>
+  <div class="sg">
+    <div class="sc" data-s="ESC 15" data-a="Acto 04 — Instalación" data-d="Ensayo de compresión, pilote bajo carga activa" data-i="storyboard-frames/ChatGPT Image 17 jun 2026, 10_30_32 p.m..png" data-v="Porque la confianza no se promete. La confianza se demuestra."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 15</span><img src="storyboard-frames/ChatGPT Image 17 jun 2026, 10_30_32 p.m..png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Primer Plano · Ensayo de Compresión</div><div class="sc-desc">Equipo de compresión aplicando carga. El pilote resiste — prueba de integridad estructural.</div><div class="sc-vo">"Porque la confianza no se promete. La confianza se demuestra."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 16" data-a="Acto 04 — Instalación" data-d="Equipo de perforación compacto en obra activa" data-i="storyboard-frames/5a.png" data-v="No vendemos tornillos. No vendemos componentes."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 16</span><img src="storyboard-frames/5a.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Obra en Curso</div><div class="sc-desc">Equipo de perforación compacto — huella mínima frente a la maquinaria tradicional.</div><div class="sc-vo">"No vendemos tornillos. No vendemos componentes."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 17" data-a="Acto 04 — Instalación" data-d="Tornillo de fundación rotando hacia el suelo, hélice avanzando" data-i="storyboard-frames/5b.png" data-v="Entregamos soluciones de construcción respaldadas por ingeniería."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 17</span><img src="storyboard-frames/5b.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Primer Plano · Pilote Siendo Instalado</div><div class="sc-desc">Tornillo rotando hacia el suelo — hélice avanzando. Sin excavación, sin escombros.</div><div class="sc-vo">"Entregamos soluciones respaldadas por ingeniería, experiencia y desempeño validado."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 18" data-a="Acto 04 — Instalación" data-d="Timelapse · Múltiples pilotes instalados en secuencia" data-i="storyboard-frames/ChatGPT Image 17 jun 2026, 10_31_00 p.m..png" data-v="Lo que antes tomaba semanas hoy puede completarse en horas."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 18</span><img src="storyboard-frames/ChatGPT Image 17 jun 2026, 10_31_00 p.m..png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Timelapse · Secuencia de Instalación</div><div class="sc-desc">Cuadrícula de fundación completa instalada. Lo que antes tardaba semanas ahora en horas.</div><div class="sc-vo">"Lo que antes tomaba semanas hoy puede completarse en horas."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 19" data-a="Acto 04 — Instalación" data-d="Aéreo · Drone retrocede desde cuadrícula de fundación terminada" data-i="storyboard-frames/ChatGPT Image 17 jun 2026, 10_32_32 p.m..png" data-v="Más de una década desarrollando sistemas de tornillos en Chile."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 19</span><img src="storyboard-frames/ChatGPT Image 17 jun 2026, 10_32_32 p.m..png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Aéreo · Retroceso de Drone</div><div class="sc-desc">El drone sube y revela la cuadrícula de fundación terminada — limpia, precisa, sin residuos.</div><div class="sc-vo">"Más de una década desarrollando sistemas de tornillos de fundación en Chile."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+  </div>
+</section>
+
+<!-- ═══════════ ACTO 05 — IMPACTO ═══════════ -->
+<section class="act a5" id="a5">
+  <div class="act-hdr">
+    <div class="act-badge"><div class="act-badge-n">Acto</div><div class="act-badge-i">05</div></div>
+    <div class="act-meta"><h2>Impacto · Proyectos a lo Largo de Chile</h2><time>00:55 — 01:01 · 12 escenas</time></div>
+  </div>
+  <div class="sg">
+    <div class="sc" data-s="ESC 20" data-a="Acto 05 — Impacto" data-d="Infraestructura terminada sobre fundaciones Ecopilote" data-i="storyboard-frames/7.png" data-v="Más de una década desarrollando sistemas de tornillos en Chile."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 20</span><img src="storyboard-frames/7.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Infraestructura Terminada</div><div class="sc-desc">Pasarela o puente terminado sobre fundaciones Ecopilote — integrado con el paisaje.</div><div class="sc-vo">"Más de una década desarrollando sistemas en Chile."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 21" data-a="Acto 05 — Impacto" data-d="Proyecto residencial moderno sobre fundaciones R&V" data-i="storyboard-frames/7b.png" data-v="Más de una década aprendiendo, adaptando y mejorando."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 21</span><img src="storyboard-frames/7b.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Proyecto Residencial</div><div class="sc-desc">Estructura residencial moderna — mínima perturbación, contexto chileno visible.</div><div class="sc-vo">"Más de una década aprendiendo, adaptando y mejorando."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 22" data-a="Acto 05 — Impacto" data-d="Proyecto emblemático, estructura de escala monumental" data-i="storyboard-frames/7c.png" data-v="Instalación más rápida."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 22</span><img src="storyboard-frames/7c.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano Héroe · Proyecto Emblemático</div><div class="sc-desc">Estructura emblemática terminada — escala monumental. El proyecto más representativo.</div><div class="sc-vo">"Instalación más rápida."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 23" data-a="Acto 05 — Impacto" data-d="Proyecto comercial o de hotel, escala mediana" data-i="storyboard-frames/8.png" data-v="Menor impacto."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 23</span><img src="storyboard-frames/8.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Aéreo · Proyecto Comercial</div><div class="sc-desc">Proyecto comercial / hotel — establece rango de aplicación de lo residencial a lo comercial.</div><div class="sc-vo">"Menor impacto."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 24" data-a="Acto 05 — Impacto" data-d="Estructura o instalación industrial, cargas mayores" data-i="storyboard-frames/8a.png" data-v="Mayor eficiencia."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 24</span><img src="storyboard-frames/8a.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Nivel de Suelo · Industrial</div><div class="sc-desc">Estructura industrial — demuestra escalabilidad más allá de lo residencial.</div><div class="sc-vo">"Mayor eficiencia."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 25" data-a="Acto 05 — Impacto" data-d="Proyecto de infraestructura pública, integración con entorno" data-i="storyboard-frames/9.png" data-v="Ingeniería diseñada para el futuro."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 25</span><img src="storyboard-frames/9.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Infraestructura</div><div class="sc-desc">Puente o estructura de obra pública — integración de la ingeniería con el entorno.</div><div class="sc-vo">"Ingeniería diseñada para el futuro."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 26" data-a="Acto 05 — Impacto" data-d="Barrido aéreo sobre múltiples proyectos terminados" data-i="storyboard-frames/9a.png" data-v="Construir más perturbando menos."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 26</span><img src="storyboard-frames/9a.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Aéreo · Montaje del Portafolio</div><div class="sc-desc">Barrido aéreo sobre múltiples proyectos — alcance geográfico y diversidad en Chile.</div><div class="sc-vo">"Construir más perturbando menos."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 27" data-a="Acto 05 — Impacto" data-d="Estructura en entorno natural, huella visual mínima" data-i="storyboard-frames/10.png" data-v="Construir más perturbando menos."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 27</span><img src="storyboard-frames/10.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Integración Natural</div><div class="sc-desc">Estructura en entorno natural — huella visual mínima, responsabilidad ambiental tangible.</div><div class="sc-vo">"Construir más perturbando menos."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 28" data-a="Acto 05 — Impacto" data-d="Escala humana · personas usando estructuras R&V" data-i="storyboard-frames/11.png" data-v="Ingeniería diseñada para el futuro."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 28</span><img src="storyboard-frames/11.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Primer Plano · Escala Humana</div><div class="sc-desc">Personas usando estructuras fundadas por R&V — el resultado humano de la ingeniería.</div><div class="sc-vo">"Ingeniería diseñada para el futuro."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 29" data-a="Acto 05 — Impacto" data-d="Proyecto R&V en paisaje chileno dramático (Andes, desierto o costa)" data-i="storyboard-frames/12.png" data-v="Fundaciones inteligentes para el futuro."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 29</span><img src="storyboard-frames/12.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Paisaje Dramático</div><div class="sc-desc">Proyecto R&V en paisaje chileno dramático — establece autoridad en terrenos desafiantes.</div><div class="sc-vo">"Fundaciones inteligentes para el futuro."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 30" data-a="Acto 05 — Impacto" data-d="Detalle de proyecto terminado, puntos de conexión precisos" data-i="storyboard-frames/13.png" data-v="Ingeniería que transforma el suelo en confianza."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 30</span><img src="storyboard-frames/13.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano Medio · Detalle del Proyecto</div><div class="sc-desc">Detalle terminado — precisión estructural, calidad del terminado, orgullo de la ingeniería.</div><div class="sc-vo">"Ingeniería que transforma el suelo en confianza."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 31" data-a="Acto 05 — Impacto" data-d="Retroceso aéreo final sobre proyecto emblemático" data-i="storyboard-frames/14.png" data-v="Más de una década. Cada proyecto. Demostrado."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 31</span><img src="storyboard-frames/14.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Aéreo · Retroceso Final</div><div class="sc-desc">Retroceso aéreo revela escala completa del proyecto. Transición hacia el posicionamiento.</div><div class="sc-vo">"Más de una década. Cada proyecto. Demostrado."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+  </div>
+</section>
+
+<!-- ═══════════ ACTO 06 — POSICIONAMIENTO ═══════════ -->
+<section class="act a6" id="a6">
+  <div class="act-hdr">
+    <div class="act-badge"><div class="act-badge-n">Acto</div><div class="act-badge-i">06</div></div>
+    <div class="act-meta"><h2>Posicionamiento · Cierre de Marca</h2><time>01:02 — 01:07 · 5 escenas</time></div>
+  </div>
+  <div class="sg">
+    <div class="sc" data-s="ESC 32" data-a="Acto 06 — Posicionamiento" data-d="Transición de marca, fundido en azul corporativo R&V" data-i="storyboard-frames/ChatGPT Image 17 jun 2026, 10_44_39 p.m..png" data-v="R&V Fundaciones."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 32</span><img src="storyboard-frames/ChatGPT Image 17 jun 2026, 10_44_39 p.m..png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Fundido Lento · Transición de Marca</div><div class="sc-desc">Transición del proyecto a la identidad de marca — azul corporativo profundo emergiendo.</div><div class="sc-vo">"R&V Fundaciones."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 33" data-a="Acto 06 — Posicionamiento" data-d="Equipo R&V frente a proyecto terminado" data-i="storyboard-frames/ChatGPT Image 17 jun 2026, 10_47_38 p.m..png" data-v="Ingeniería. Innovación. Confianza."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 33</span><img src="storyboard-frames/ChatGPT Image 17 jun 2026, 10_47_38 p.m..png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Plano General · Equipo + Proyecto</div><div class="sc-desc">Equipo de ingeniería R&V frente a proyecto terminado — orgullo, autoridad, credibilidad.</div><div class="sc-vo">"Ingeniería. Innovación. Confianza."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 34" data-a="Acto 06 — Posicionamiento" data-d="Cuadro gráfico con mensaje clave de marca sobre fondo estructural" data-i="storyboard-frames/ChatGPT Image 17 jun 2026, 11_18_05 p.m..png" data-v="Fundaciones inteligentes para el futuro."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 34</span><img src="storyboard-frames/ChatGPT Image 17 jun 2026, 11_18_05 p.m..png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Cuadro Gráfico · Mensaje de Marca</div><div class="sc-desc">Mensaje clave sobre fondo estructural abstracto. Cuadro dominado por tipografía.</div><div class="sc-vo">"Fundaciones inteligentes para el futuro."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 35" data-a="Acto 06 — Posicionamiento" data-d="Logo R&V sobre fondo azul corporativo, tarjeta final sostenida 3s" data-i="storyboard-frames/otros.png" data-v="R&V Fundaciones. Fundaciones inteligentes respaldadas por ingeniería real."><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 35</span><img src="storyboard-frames/otros.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Tarjeta Final · Logo</div><div class="sc-desc">Logo R&V sobre azul corporativo. Web y datos de contacto aparecen en fundido.</div><div class="sc-vo">"R&V Fundaciones. Fundaciones inteligentes respaldadas por ingeniería real."</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+
+    <div class="sc" data-s="ESC 36" data-a="Acto 06 — Posicionamiento" data-d="CTA final con URL, contacto y diferenciadores clave" data-i="storyboard-frames/otros2.png" data-v="—"><div class="sc-sb">—</div><div class="sc-img"><span class="sc-num">ESC 36</span><img src="storyboard-frames/otros2.png" alt="" onerror="this.style.display='none'"></div><div class="sc-body locked"><div class="sc-shot">Cuadro CTA · Final</div><div class="sc-desc">Llamada a la acción — URL del sitio, contacto y diferenciadores. Punto de loop en feria.</div><div class="sc-vo">—</div><div class="sc-ce"><div class="sc-ce-lbl">Tu comentario</div><div class="sc-ce-txt"></div></div><button class="btn-c" onclick="openD(this)"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a1 1 0 01-1 1H5l-3 3V3a1 1 0 011-1h10a1 1 0 011 1v7z"/></svg>Comentar escena</button></div></div>
+  </div>
+</section>
+
+<!-- RESUMEN -->
+<div class="sum" id="sumPanel">
+  <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--faint);margin-bottom:14px;display:flex;align-items:center;gap:12px">Resumen de Revisión<span style="flex:1;height:1px;background:var(--border)"></span></div>
+  <div class="sum-box">
+    <div class="sum-head">
+      <div><h3>Tu revisión completa</h3><p id="sumSub">Escenas comentadas</p></div>
+      <button class="btn-sa" id="btnSA" onclick="sendAll()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2L2 8l4 2m8-8l-4 6-4-2m8-6v12"/></svg>
+        Enviar revisión completa
+      </button>
+    </div>
+    <div class="sum-list" id="sumList"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>R&V Fundaciones · Revisión de Storyboard · Film Corporativo 2026</span>
+  <span>Uso confidencial · Herramienta de revisión interna</span>
+</footer>
+
+<!-- DRAWER -->
+<div class="overlay" id="ov" onclick="closeOv(event)">
+  <div class="drawer">
+    <div class="d-top">
+      <button class="d-close" onclick="closeD()"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
+      <div class="d-num" id="dN"></div>
+      <div class="d-title" id="dT"></div>
+      <div class="d-sub" id="dSub"></div>
+    </div>
+    <div class="d-prev"><img id="dImg" src="" alt=""></div>
+    <div class="d-body">
+      <label class="fl">¿Cómo calificas esta escena?</label>
+      <div class="er">
+        <div class="eo"><input type="radio" name="est" id="eOk" value="Aprobado"><label class="el ok" for="eOk"><span class="ei">✓</span>Aprobado</label></div>
+        <div class="eo"><input type="radio" name="est" id="eCambio" value="Con cambios"><label class="el cambio" for="eCambio"><span class="ei">~</span>Con cambios</label></div>
+        <div class="eo"><input type="radio" name="est" id="eRech" value="Rechazar"><label class="el rech" for="eRech"><span class="ei">✕</span>Rechazar</label></div>
+      </div>
+      <label class="fl">Comentario (opcional)</label>
+      <textarea class="d-ta" id="dCmt" placeholder="Escribe tu feedback para esta escena..."></textarea>
+      <button class="btn-save" onclick="save()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+        Guardar comentario
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><div class="t-ic" id="tic"></div><span id="tmsg"></span></div>
+
+<script>
+/* ══ CONFIG ══════════════════════════════════════════
+   Para activar notificaciones por email:
+   1. Crea cuenta gratuita en emailjs.com
+   2. Conecta tu Gmail → crea template con variables:
+      {{from_name}}, {{subject}}, {{message}}
+   3. Reemplaza los valores de abajo
+   4. Cambia USE_EMAILJS a true
+════════════════════════════════════════════════════ */
+const CFG = {
+  EMAILJS_SERVICE_ID:  'YOUR_SERVICE_ID',
+  EMAILJS_TEMPLATE_ID: 'YOUR_TEMPLATE_ID',
+  EMAILJS_PUBLIC_KEY:  'YOUR_PUBLIC_KEY',
+  NOTIFY_EMAIL:        'wargabriela@gmail.com',
+  USE_EMAILJS:         false,
+};
+
+let name='', role='', cur=null;
+const DB = {};
+
+// Init EmailJS
+if (CFG.USE_EMAILJS && CFG.EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') emailjs.init(CFG.EMAILJS_PUBLIC_KEY);
+
+// Stagger reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const kids = Array.from(e.target.parentElement.children);
+    const i = kids.indexOf(e.target);
+    setTimeout(() => e.target.classList.add('rev'), i * 65);
+    obs.unobserve(e.target);
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.sc').forEach(c => obs.observe(c));
+
+function startReview() {
+  const n = document.getElementById('iName').value.trim();
+  if (!n) { document.getElementById('iName').focus(); return; }
+  name = n; role = document.getElementById('iRole').value.trim();
+  document.querySelectorAll('.sc-body.locked').forEach(b => b.classList.remove('locked'));
+  document.getElementById('pbStrip').style.display = 'flex';
+  document.getElementById('nameCard').innerHTML = `<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Revisando como</div><div style="font-size:16px;font-weight:700">${name}</div>${role?`<div style="font-size:11px;color:var(--muted);margin-top:2px">${role}</div>`:''}`;
+  updatePb();
+  document.getElementById('a1').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function openD(btn) {
+  if (!name) { document.getElementById('iName').focus(); window.scrollTo({top:0,behavior:'smooth'}); return; }
+  cur = btn.closest('.sc');
+  const d = cur.dataset;
+  document.getElementById('dN').textContent = d.s;
+  document.getElementById('dT').textContent = d.d;
+  document.getElementById('dSub').textContent = '"' + d.v + '"';
+  document.getElementById('dImg').src = d.i || '';
+  document.querySelectorAll('input[name=est]').forEach(r => r.checked = false);
+  document.getElementById('dCmt').value = '';
+  const sv = DB[d.s];
+  if (sv) {
+    const r = document.querySelector(`input[name=est][value="${sv.estado}"]`);
+    if (r) r.checked = true;
+    document.getElementById('dCmt').value = sv.comentario || '';
+  }
+  const ov = document.getElementById('ov');
+  ov.style.display = 'flex';
+  requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('vis')));
+  document.body.style.overflow = 'hidden';
+}
+
+function closeD() {
+  const ov = document.getElementById('ov');
+  ov.classList.remove('vis');
+  setTimeout(() => { ov.style.display = 'none'; document.body.style.overflow = ''; }, 300);
+  cur = null;
+}
+function closeOv(e) { if (e.target === document.getElementById('ov')) closeD(); }
+
+function save() {
+  if (!cur) return;
+  const estado = document.querySelector('input[name=est]:checked')?.value;
+  if (!estado) { toast('Elige un estado primero', false); return; }
+  const sc = cur.dataset.s;
+  const comentario = document.getElementById('dCmt').value.trim();
+  DB[sc] = { escena: sc, acto: cur.dataset.a, descripcion: cur.dataset.d, estado, comentario, nombre: name, rol: role, ts: new Date().toISOString() };
+  updateCard(cur, estado, comentario);
+  updateSum(); updatePb();
+  toast('Comentario guardado', true);
+  closeD();
+}
+
+function updateCard(card, estado, comentario) {
+  card.classList.remove('s-ok','s-cambio','s-rechazado');
+  const map = { 'Aprobado':'ok', 'Con cambios':'cambio', 'Rechazar':'rechazado' };
+  const lbl = { 'Aprobado':'Aprobado', 'Con cambios':'Con cambios', 'Rechazar':'Rechazado' };
+  card.classList.add('s-' + map[estado]);
+  card.querySelector('.sc-sb').textContent = lbl[estado];
+  if (comentario) {
+    card.querySelector('.sc-ce').classList.add('vis');
+    card.querySelector('.sc-ce-txt').textContent = comentario;
+  }
+  const btn = card.querySelector('.btn-c');
+  btn.classList.add('done');
+  btn.innerHTML = '<span class="bd"></span> Editar comentario';
+}
+
+function updatePb() {
+  const total = document.querySelectorAll('.sc').length;
+  const keys = Object.keys(DB);
+  const ok = Object.values(DB).filter(c=>c.estado==='Aprobado').length;
+  const cambio = Object.values(DB).filter(c=>c.estado==='Con cambios').length;
+  const rech = Object.values(DB).filter(c=>c.estado==='Rechazar').length;
+  document.getElementById('cP').textContent = `${total - keys.length} pend.`;  // total auto-calculated from DOM
+  document.getElementById('cO').textContent = ok + ' ok';
+  document.getElementById('cC').textContent = cambio + ' cambios';
+  document.getElementById('cR').textContent = rech + ' rech.';
+}
+
+function updateSum() {
+  const keys = Object.keys(DB);
+  if (!keys.length) return;
+  const panel = document.getElementById('sumPanel');
+  panel.classList.add('vis');
+  document.getElementById('sumSub').textContent = `${keys.length} escena${keys.length>1?'s':''} revisada${keys.length>1?'s':''}`;
+  const mp = { 'Aprobado':'ok', 'Con cambios':'cambio', 'Rechazar':'rech' };
+  const ml = { 'Aprobado':'Aprobado', 'Con cambios':'Con cambios', 'Rechazar':'Rechazado' };
+  document.getElementById('sumList').innerHTML = keys.map(k => {
+    const c = DB[k];
+    return `<div class="si"><div class="si-s">${c.escena}<br><span style="font-size:8px;color:var(--faint)">${c.acto.split(' — ')[1]||''}</span></div><div><div class="si-d">${c.descripcion}</div>${c.comentario?`<div class="si-c">"${c.comentario}"</div>`:''}</div><div class="ss ${mp[c.estado]}">${ml[c.estado]}</div></div>`;
+  }).join('');
+}
+
+async function sendAll() {
+  const keys = Object.keys(DB);
+  if (!keys.length) { toast('No hay comentarios para enviar', false); return; }
+  const btn = document.getElementById('btnSA');
+  btn.disabled = true;
+  const mp = { 'Aprobado':'✓ APROBADO', 'Con cambios':'~ CON CAMBIOS', 'Rechazar':'✕ RECHAZAR' };
+  const lines = keys.map(k => { const c=DB[k]; return `${c.escena} | ${c.acto} | ${mp[c.estado]} | ${c.comentario||'(sin comentario)'}` });
+  const body = `REVISIÓN DE STORYBOARD — R&V Fundaciones\n\nCliente: ${name}${role?' · '+role:''}\nFecha: ${new Date().toLocaleString('es-CL')}\n\n${lines.join('\n')}\n\nTotal escenas revisadas: ${keys.length} de ${document.querySelectorAll('.sc').length}`;
+
+  if (CFG.USE_EMAILJS && CFG.EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID') {
+    try {
+      await emailjs.send(CFG.EMAILJS_SERVICE_ID, CFG.EMAILJS_TEMPLATE_ID, {
+        to_email: CFG.NOTIFY_EMAIL, from_name: name,
+        subject: `[R&V Storyboard] Revisión de ${name} — ${keys.length} escenas`,
+        message: body, json: JSON.stringify(Object.values(DB), null, 2)
+      });
+      toast('¡Revisión enviada exitosamente!', true);
+    } catch(e) { dlFile(body); }
+  } else { dlFile(body); }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13l5-5 3 3 5-7"/></svg> Revisión enviada';
+}
+
+function dlFile(body) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([body],{type:'text/plain;charset=utf-8'}));
+  a.download = `revision-ryv-${name.replace(/\s+/g,'-').toLowerCase()}.txt`;
+  a.click();
+  toast('Revisión descargada. Envía el archivo a tu contacto en R&V.', true);
+}
+
+function toast(msg, ok) {
+  const t = document.getElementById('toast');
+  document.getElementById('tmsg').textContent = msg;
+  document.getElementById('tic').innerHTML = ok
+    ? `<svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#22C55E" stroke-width="2"><path d="M1 6l4 4 6-7"/></svg>`
+    : `<svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#EF4444" stroke-width="2"><path d="M1 1l10 10M11 1L1 11"/></svg>`;
+  t.className = 'toast ' + (ok?'ok':'err');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+</script>
+</body>
+</html>
